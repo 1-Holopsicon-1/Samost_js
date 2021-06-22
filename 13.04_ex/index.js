@@ -4,8 +4,8 @@ document.querySelector('#search').addEventListener('input', (event) => srch(even
 
 fetch('https://reqres.in/api/users?page=1').then(res => res.json()).then(body=> photos(body.data))
 
-let base = []
-let cards = []
+let bs = []
+let crd = []
 
 function render(data) {
     let main = document.querySelector('.cards')
@@ -18,58 +18,58 @@ function render(data) {
     avatar_.src = avatar
     wrp.append(avatar_)
 
-    let email_ = document.createElement('p')
+    let email_ = document.createElement('h3')
     email_.textContent = email
     wrp.append(email_)
 
-    let firstName = document.createElement('p')
+    let firstName = document.createElement('h3')
     firstName.textContent = first_name
     wrp.append(firstName)
 
-    let lastName = document.createElement('p')
+    let lastName = document.createElement('h3')
     lastName.textContent = last_name
     wrp.append(lastName)
 
     main.append(wrp)
-    cards.push(data)
+    crd.push(data)
 }
 
 function fromAtoZ() {
-    cards.sort((a, b) => a.first_name > b.first_name ? 1 : -1)
-    render_no_async(cards)
+    crd.sort((a, b) => a.first_name > b.first_name ? 1 : -1)
+    render_no_async(crd)
 }
 
 function fromZtoA() {
-    cards.sort((a, b) => a.first_name < b.first_name ? 1 : -1)
-    render_no_async(cards)
+    crd.sort((a, b) => a.first_name < b.first_name ? 1 : -1)
+    render_no_async(crd)
 }
 
 function render_no_async(body) {
     let main = document.querySelector('.cards')
-    let newCards = body.slice()
-    cards = []
+    let newcrd = body.slice()
+    crd = []
     main.innerText = ''
 
-    for (i in newCards) {
+    for (i in newcrd) {
         render(body[i])
     }
 }
 
 function srch(event) {
-    let patient = base.slice()
+    let patient = bs.slice()
     let re = new RegExp(event.target.value + '.+$', 'i')
-    if (event.target.value !== '') {patient = cards.filter((event, i, a) =>  event.first_name.search(re) != -1 )}
+    if (event.target.value !== '') {patient = crd.filter((event, i, a) =>  event.first_name.search(re) != -1 )}
     if (patient.length === 0) {patient.push({email: '', avatar: 'https://avatars.mds.yandex.net/get-znatoki/1368855/2a0000016cc1fb6175fa439bc6ab108427ae/w480', first_name: '', last_name:''})}
     render_no_async(patient)
 }
 
 async function photos(body) {
 	//console.log('photos', body)
-	const newCards = cards.slice()
-	cards = []
+	const newcrd = crd.slice()
+	crd = []
 	const mainTag = document.querySelector('.cards')
 	mainTag.innerText = ''
 	data = await body
-	base = data.slice()
+	bs = data.slice()
 	for (i in data) {render(data[i])}
 }
